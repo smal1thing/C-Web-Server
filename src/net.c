@@ -81,7 +81,27 @@ int get_listener_socket(char *port)
             //perror("server: bind");
             continue;
         }
+        
+        //print the ip address
+        void *addr;
+		char *ipver;
+        char ipstr[INET6_ADDRSTRLEN];
+		// get the pointer to the address itself,
+		// different fields in IPv4 and IPv6:
+		if (p->ai_family == AF_INET) { // IPv4
+			struct sockaddr_in *ipv4 = (struct sockaddr_in *)p->ai_addr;
+			addr = &(ipv4->sin_addr);
+			ipver = "IPv4";
+		} else { // IPv6
+			struct sockaddr_in6 *ipv6 = (struct sockaddr_in6 *)p->ai_addr;
+			addr = &(ipv6->sin6_addr);
+			ipver = "IPv6";
+		}
 
+		// convert the IP to a string and print it:
+		inet_ntop(p->ai_family, addr, ipstr, sizeof ipstr);
+		printf("  %s: %s\n", ipver, ipstr);
+		
         // If we got here, we got a bound socket and we're done
         break;
     }

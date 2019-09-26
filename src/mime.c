@@ -21,13 +21,13 @@ char *strlower(char *s)
  */
 char *mime_type_get(char *filename)
 {
-    char *ext = strrchr(filename, '.');
+    char *ext = strrchr(filename, '.'); //return the pointer to the last location of '.'
 
     if (ext == NULL) {
         return DEFAULT_MIME_TYPE;
     }
     
-    ext++;
+    ext++; //++
 
     strlower(ext);
 
